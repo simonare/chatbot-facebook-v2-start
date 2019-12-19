@@ -21,6 +21,6 @@
     "@sendgrid/mail": "^6.4.0"
   },
   "engines": {
-    "node": "13.4.0"
+    "node": "11.4.0"
   }
 }
