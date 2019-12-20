@@ -243,7 +243,7 @@ function handleDialogFlowAction(sender, action, messages, contexts, parameters) 
 
             break;
         case "detailed-application":
-            let filteredContexts = contexts.filter(function(el) {
+            let filteredContexts = contexts.filter(function (el) {
                 return el.name.includes('job_application') ||
                     el.name.includes('job-application-details_dialog_context');
             });
@@ -259,20 +259,38 @@ function handleDialogFlowAction(sender, action, messages, contexts, parameters) 
                     contexts[0].parameters.fields['years-of-experience'].stringValue : '';
                 let job_vacancy = (isDefined(contexts[0].parameters.fields['job-vacancy']) && contexts[0].parameters.fields['job-vacancy'] != '') ?
                     contexts[0].parameters.fields['job-vacancy'].stringValue : '';
-            
 
-                if (phone_number != '' && user_name != '' && previous_job != '' && years_of_exp != '' && job_vacancy != '')
-                {
-                    let emailContent = 'A new job enquiery from ' + user_name + ' for the job: ' + job_vacancy + 
-                        '.<br> Previous job position: ' + previous_job + '.' + 
-                        '.<br> Years of experience: ' + years_of_exp + '.' + 
-                        '.<br> Phone number: ' + phone_number + '.' ;
+
+                if (phone_number == '' && previous_job != '' && years_of_exp != '' && years_of_exp == '') {
+                    let replies = [
+                        {
+                            content_type: "text",
+                            title: "2 Yıldan az",
+                            payload: "Less_than_1year"
+                        },
+                        {
+                            content_type: "text",
+                            title: "10 Yıldan az",
+                            payload: "Less_than_10year"
+                        },
+                        {
+                            content_type: "text",
+                            title: "10 Yıldan fazla",
+                            payload: "More_than_10year"
+                        }
+                    ];
+                    sendQuickReply(sender, messages[0].text.text[0], replies);
+                }
+                else if (phone_number != '' && user_name != '' && previous_job != '' && years_of_exp != '' && job_vacancy != '') {
+                    let emailContent = 'A new job enquiery from ' + user_name + ' for the job: ' + job_vacancy +
+                        '.<br> Previous job position: ' + previous_job + '.' +
+                        '.<br> Years of experience: ' + years_of_exp + '.' +
+                        '.<br> Phone number: ' + phone_number + '.';
 
                     sendEmail('New Job application', emailContent);
 
                     handleMessages(messages, sender);
-                } else
-                {
+                } else {
                     handleMessages(messages, sender);
                 }
             }
@@ -959,10 +977,11 @@ function greetUserText(senderID)
     }, function(error, response, body){
         if (!error && response.statusCode == 200){
             var user = JSON.parse(body);
-            console.log('getUserData: %s', user);
+            console.log('getUserData:', user);
             if (user.first_name){
                 console.log("FB user: %s %s %s", user.first_name, user.last_name, user.profile_pic);
-                sendTextMessage(senderID, "Merhaba " + user.first_name + '!');
+                sendTextMessage(senderID, "Merhaba " + user.first_name + '!' + 
+                    'sizin için sıklıkla sorulan sorulara cevap verebilir veya açık pozisyonlarımız hakkında bilgi vererek iş başvurunuzu alabilirim.');
             }
             else{
                 console.log("Cannot get data for fb user with user id", senderID);
