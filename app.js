@@ -788,6 +788,9 @@ function receivedPostback(event) {
     var payload = event.postback.payload;
 
     switch (payload) {
+        case "GET_STARTED":
+            greetUserText(senderID);
+            break;
         case "JOB_APPLY":
             sendToDialogFlow(senderID, 'job openings');
             break;
@@ -944,6 +947,31 @@ function sendEmail(subject, content) {
             console.log("email not sent!");
             console.log(err.toString());
         });
+}
+
+function greetUserText(senderID)
+{
+    request({
+        uri: 'http://graph.facebook.com/v5.0/' + senderID,
+        qs: {
+            access_token: config.FB_PAGE_TOKEN
+        }
+    }, function(error, response, body){
+        if (!error && response.statusCode == 200){
+            var user = JSON.parse(body);
+            console.log('getUserData: ' + user);
+            if (user.first_name){
+                console.log("FB user: %s %s %s", user.first_name, user.last_name, user.profile_pic);
+                sendTextMessage(senderID, "Merhaba " + user.first_name + '!');
+            }
+            else{
+                console.log("Cannot get data for fb user with user id", senderID);
+            }
+        }
+        else{
+            console.error(response.error);
+        }
+    });
 }
 
 function isDefined(obj) {
