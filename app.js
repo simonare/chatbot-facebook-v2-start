@@ -240,6 +240,8 @@ function handleDialogFlowAction(sender, action, messages, contexts, parameters) 
                         '.<br> Phone number: ' + phone_number + '.' ;
 
                     sendEmail('New Job application', emailContent);
+
+                    handleMessages(messages, sender);
                 } else
                 {
                     handleMessages(messages, sender);
