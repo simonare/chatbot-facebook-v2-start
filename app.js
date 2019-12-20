@@ -810,7 +810,7 @@ function receivedPostback(event) {
             greetUserText(senderID);
             break;
         case "JOB_APPLY":
-            sendToDialogFlow(senderID, 'yeni çalışan almayı düşünüyor musunuz?');
+            sendToDialogFlow(senderID, "yeni çalışan almayı düşünüyor musunuz?");
             break;
         case "CHAT":
             sendTextMessage(senderID, "Ben de sohbetinizden keyif aldım. Bana sormak istediğiniz başka birşey var mı?");
