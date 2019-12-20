@@ -425,6 +425,8 @@ async function sendToDialogFlow(sender, textString, params) {
 
     sendTypingOn(sender);
 
+    console.log("sessionId", sessionIds.get(sender));
+
     try {
         const sessionPath = sessionClient.sessionPath(
             config.GOOGLE_PROJECT_ID,
