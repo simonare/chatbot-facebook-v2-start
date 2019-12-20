@@ -213,6 +213,35 @@ function handleEcho(messageId, appId, metadata) {
 
 function handleDialogFlowAction(sender, action, messages, contexts, parameters) {
     switch (action) {
+        case "faq-delivery":
+            handleMessages(messages, sender);
+
+            sendTypingOn(sender);
+
+            let buttons = [
+                {
+                    type:"web_url",
+                    url: "https://www.google.com.tr",
+                    title: "Track your order"
+                },
+                {
+                    type:"phone_number",
+                    title: "Call Us!",
+                    payload: "+905428770938"
+                },
+                {
+                    type:"postback",
+                    title: "Keep on Chatting",
+                    payload: "CHAT"
+                },
+
+            ];
+
+            setTimeout(function(){
+                sendButtonMessage(sender, "What would you like to do next?", buttons);
+            }, 3000);
+
+            break;
         case "detailed-application":
             let filteredContexts = contexts.filter(function(el) {
                 return el.name.includes('job_application') ||
@@ -759,6 +788,9 @@ function receivedPostback(event) {
     var payload = event.postback.payload;
 
     switch (payload) {
+        case "CHAT":
+            sendTextMessage(senderID, "What do you want to do next?");
+            break;
         default:
             //unindentified payload
             sendTextMessage(senderID, "I'm not sure what you want. Can you be more specific?");
