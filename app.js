@@ -221,15 +221,15 @@ function handleDialogFlowAction(sender, action, messages, contexts, parameters) 
 
             if (filteredContexts.length > 0 && contexts[0].parameters) {
                 let phone_number = (isDefined(contexts[0].parameters.fields['phone-number']) && contexts[0].parameters.fields['phone-number'] != '') ?
-                    ccontexts[0].parameters.fields['phone-number'].stringValue : '';
+                    contexts[0].parameters.fields['phone-number'].stringValue : '';
                 let user_name = (isDefined(contexts[0].parameters.fields['user-name']) && contexts[0].parameters.fields['user-name'] != '') ?
-                    ccontexts[0].parameters.fields['user-name'].stringValue : '';
+                    contexts[0].parameters.fields['user-name'].stringValue : '';
                 let previous_job = (isDefined(contexts[0].parameters.fields['previous-job']) && contexts[0].parameters.fields['previous-job'] != '') ?
-                    ccontexts[0].parameters.fields['previous-job'].stringValue : '';
+                    contexts[0].parameters.fields['previous-job'].stringValue : '';
                 let years_of_exp = (isDefined(contexts[0].parameters.fields['years-of-experience']) && contexts[0].parameters.fields['years-of-experience'] != '') ?
-                    ccontexts[0].parameters.fields['years-of-experience'].stringValue : '';
+                    contexts[0].parameters.fields['years-of-experience'].stringValue : '';
                 let job_vacancy = (isDefined(contexts[0].parameters.fields['job-vacancy']) && contexts[0].parameters.fields['job-vacancy'] != '') ?
-                    ccontexts[0].parameters.fields['job-vacancy'].stringValue : '';
+                    contexts[0].parameters.fields['job-vacancy'].stringValue : '';
             }
 
             if (phone_number != '' && user_name != '' && previous_job != '' && years_of_exp != '' && job_vacancy != '')
