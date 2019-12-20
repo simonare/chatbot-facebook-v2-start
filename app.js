@@ -788,12 +788,15 @@ function receivedPostback(event) {
     var payload = event.postback.payload;
 
     switch (payload) {
+        case "JOB_APPLY":
+            sendToDialogFlow(senderID, 'job openings');
+            break;
         case "CHAT":
-            sendTextMessage(senderID, "What do you want to do next?");
+            sendTextMessage(senderID, "Ben de sohbetinizden keyif aldım. Bana sormak istediğiniz başka birşey var mı?");
             break;
         default:
             //unindentified payload
-            sendTextMessage(senderID, "I'm not sure what you want. Can you be more specific?");
+            sendTextMessage(senderID, "Neye ihtiyacınız olduğundan tam olarak emin olamadım. Daha açık belirtebilirmisiniz?");
             break;
 
     }
