@@ -802,6 +802,11 @@ function receivedPostback(event) {
     var recipientID = event.recipient.id;
     var timeOfPostback = event.timestamp;
 
+    if (!sessionIds.has(senderID)) {
+        console.log("Adding senderId '%s' to 'sessionIds'", senderID);
+        sessionIds.set(senderID, uuid.v1());
+    }
+
     // The 'payload' param is a developer-defined field which is set in a postback
     // button for Structured Messages.
     var payload = event.postback.payload;
