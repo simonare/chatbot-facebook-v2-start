@@ -959,7 +959,7 @@ function greetUserText(senderID)
     }, function(error, response, body){
         if (!error && response.statusCode == 200){
             var user = JSON.parse(body);
-            console.log('getUserData: ' + user);
+            console.log('getUserData: %s', user);
             if (user.first_name){
                 console.log("FB user: %s %s %s", user.first_name, user.last_name, user.profile_pic);
                 sendTextMessage(senderID, "Merhaba " + user.first_name + '!');
