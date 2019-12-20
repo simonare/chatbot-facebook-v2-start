@@ -952,7 +952,7 @@ function sendEmail(subject, content) {
 function greetUserText(senderID)
 {
     request({
-        uri: 'http://graph.facebook.com/v5.0/' + senderID,
+        uri: 'https://graph.facebook.com/v5.0/' + senderID,
         qs: {
             access_token: config.FB_PAGE_TOKEN
         }
