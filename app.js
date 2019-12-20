@@ -160,6 +160,7 @@ function receivedMessage(event) {
     var message = event.message;
 
     if (!sessionIds.has(senderID)) {
+        console.log("Adding senderId '%s' to 'sessionIds'", senderID);
         sessionIds.set(senderID, uuid.v1());
     }
     //console.log("Received message for user %d and page %d at %d with message:", senderID, recipientID, timeOfMessage);
@@ -424,8 +425,6 @@ function handleDialogFlowResponse(sender, response) {
 async function sendToDialogFlow(sender, textString, params) {
 
     sendTypingOn(sender);
-
-    console.log("sessionId", sessionIds.get(sender));
 
     try {
         const sessionPath = sessionClient.sessionPath(
