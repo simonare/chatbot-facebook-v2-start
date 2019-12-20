@@ -230,21 +230,21 @@ function handleDialogFlowAction(sender, action, messages, contexts, parameters) 
                     contexts[0].parameters.fields['years-of-experience'].stringValue : '';
                 let job_vacancy = (isDefined(contexts[0].parameters.fields['job-vacancy']) && contexts[0].parameters.fields['job-vacancy'] != '') ?
                     contexts[0].parameters.fields['job-vacancy'].stringValue : '';
+            
+
+                if (phone_number != '' && user_name != '' && previous_job != '' && years_of_exp != '' && job_vacancy != '')
+                {
+                    let emailContent = 'A new job enquiery from ' + user_name + ' for the job: ' + job_vacancy + 
+                        '.<br> Previous job position: ' + previous_job + '.' + 
+                        '.<br> Years of experience: ' + years_of_exp + '.' + 
+                        '.<br> Phone number: ' + phone_number + '.' ;
+
+                    sendEmail('New Job application', emailContent);
+                } else
+                {
+                    handleMessages(messages, sender);
+                }
             }
-
-            if (phone_number != '' && user_name != '' && previous_job != '' && years_of_exp != '' && job_vacancy != '')
-            {
-                let emailContent = 'A new job enquiery from ' + user_name + ' for the job: ' + job_vacancy + 
-                    '.<br> Previous job position: ' + previous_job + '.' + 
-                    '.<br> Years of experience: ' + years_of_exp + '.' + 
-                    '.<br> Phone number: ' + phone_number + '.' ;
-
-                sendEmail('New Job application', emailContent);
-            } else
-            {
-                handleMessages(messages, sender);
-            }
-
             break;
         default:
             //unhandled action, just send back the text
