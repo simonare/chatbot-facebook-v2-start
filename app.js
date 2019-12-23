@@ -1033,7 +1033,7 @@ function sendEmail(subject, content) {
         });
 }
 
-function greetUserText(senderID)
+async function greetUserText(senderID)
 {
     let user = usersMap.get(senderID);
 

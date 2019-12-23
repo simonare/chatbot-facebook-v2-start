@@ -19,7 +19,7 @@ module.exports = {
                 console.log('getUserData:', user);
                 if (user.first_name){
                     console.log("FB user: %s %s %s", user.first_name, user.last_name, user.profile_pic);
-                    storeUserData(senderID, user);
+                    await storeUserData(senderID, user);
                     callback(user);
                 }
                 else{
@@ -34,13 +34,12 @@ module.exports = {
 };
 
 
-function storeUserData(senderId, user) {
+async function storeUserData(senderId, user) {
     var pool = new pg.Pool(config.PG_CONFIG);
     pool.connect(function (error, client, done) {
         if (error)
             return console.error("Error acquiring client", error.stack);
 
-        var rows = [];
         client.query(`SELECT fb_id FROM users WHERE fb_id = '${senderId}' LIMIT 1`,
             function (error, result) {
                 if (error)
