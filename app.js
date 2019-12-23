@@ -10,8 +10,9 @@ const app = express();
 const uuid = require('uuid');
 const pg = require('pg');
 
-
 pg.defaults.ssl = true;
+
+const userService = require("./user");
 
 // Messenger API parameters
 if (!config.FB_PAGE_TOKEN) {
@@ -86,6 +87,7 @@ const sessionClient = new dialogflow.SessionsClient(
 
 
 const sessionIds = new Map();
+const usersMap = new Map();
 
 // Index route
 app.get('/', function (req, res) {
@@ -151,7 +153,18 @@ app.post('/webhook/', function (req, res) {
 });
 
 
+function setSessionAndUser(senderID){
+    if (!sessionIds.has(senderID)) {
+        console.log("Adding senderId '%s' to 'sessionIds'", senderID);
+        sessionIds.set(senderID, uuid.v1());
+    }
 
+    if (!usersMap.has(senderID)){
+        userService.addUser(function(user){
+            usersMap.set(senderID, user);
+        }, senderID);
+    }
+}
 
 
 function receivedMessage(event) {
@@ -160,11 +173,9 @@ function receivedMessage(event) {
     var recipientID = event.recipient.id;
     var timeOfMessage = event.timestamp;
     var message = event.message;
+    
+    setSessionAndUser(senderID);
 
-    if (!sessionIds.has(senderID)) {
-        console.log("Adding senderId '%s' to 'sessionIds'", senderID);
-        sessionIds.set(senderID, uuid.v1());
-    }
     console.log("Received message for user %d and page %d at %d with message:", senderID, recipientID, timeOfMessage);
     console.log(JSON.stringify(message));
 
@@ -853,10 +864,7 @@ function receivedPostback(event) {
     var recipientID = event.recipient.id;
     var timeOfPostback = event.timestamp;
 
-    if (!sessionIds.has(senderID)) {
-        console.log("Adding senderId '%s' to 'sessionIds'", senderID);
-        sessionIds.set(senderID, uuid.v1());
-    }
+    setSessionAndUser(senderID);
 
     // The 'payload' param is a developer-defined field which is set in a postback
     // button for Structured Messages.
@@ -1026,56 +1034,11 @@ function sendEmail(subject, content) {
 
 function greetUserText(senderID)
 {
-    request({
-        uri: 'https://graph.facebook.com/v5.0/' + senderID,
-        qs: {
-            access_token: config.FB_PAGE_TOKEN
-        }
-    }, function(error, response, body){
-        if (!error && response.statusCode == 200){
-            var user = JSON.parse(body);
-            console.log('getUserData:', user);
-            if (user.first_name){
-                console.log("FB user: %s %s %s", user.first_name, user.last_name, user.profile_pic);
-                sendTextMessage(senderID, "Merhaba " + user.first_name + '!' + 
-                    'sizin için sıklıkla sorulan sorulara cevap verebilir veya açık pozisyonlarımız hakkında bilgi vererek iş başvurunuzu alabilirim.');
-                storeUserData(senderID, user);
-            }
-            else{
-                console.log("Cannot get data for fb user with user id", senderID);
-            }
-        }
-        else{
-            console.error(response.error);
-        }
-    });
-}
+    let user = usersMap.get(senderID);
 
-function storeUserData(senderId, user) {
-    var pool = new pg.Pool(config.PG_CONFIG);
-    pool.connect(function (error, client, done) {
-        if (error)
-            return console.error("Error acquiring client", error.stack);
-
-        var rows = [];
-        client.query(`SELECT fb_id FROM users WHERE fb_id = '${senderId}' LIMIT 1`,
-            function (error, result) {
-                if (error)
-                    console.log("Query error: " + error);
-                else {
-                    if (result.rows.length === 0) {
-                        let sql = "INSERT INTO users (fb_id, first_name, last_name, profile_pic) values ($1, $2, $3, $4)";
-                        client.query(sql, [
-                            senderId,
-                            user.first_name,
-                            user.last_name,
-                            user.profile_pic
-                        ]);
-                    }
-                }
-            });
-    });
-    pool.end();
+    sendTextMessage(senderID, "Merhaba " + user.first_name + '!' + 
+        'sizin için sıklıkla sorulan sorulara cevap verebilir veya açık pozisyonlarımız hakkında bilgi vererek iş başvurunuzu alabilirim.');
+    
 }
 
 function isDefined(obj) {
