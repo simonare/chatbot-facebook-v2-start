@@ -13,7 +13,7 @@ module.exports = {
             qs: {
                 access_token: config.FB_PAGE_TOKEN
             }
-        }, function(error, response, body){
+        }, async function(error, response, body){
             if (!error && response.statusCode == 200){
                 var user = JSON.parse(body);
                 console.log('getUserData:', user);
