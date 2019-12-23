@@ -227,7 +227,7 @@ function handleDialogFlowAction(sender, action, messages, contexts, parameters) 
                 }
             };
             
-            console.log("Getting weather information for '%s'", parameters["geo-city"]);
+            console.log("Getting weather information for '%s'", parameters);
 
             request(options, function(err, res, body) {
                 if (!(!err && res.statusCode == 200))
