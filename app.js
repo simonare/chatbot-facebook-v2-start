@@ -1054,7 +1054,7 @@ function greetUserText(senderID)
 function storeUserData(senderId, user) {
     var pool = new pg.Pool(config.PG_CONFIG);
     pool.connect(function (error, client, done) {
-        if (err)
+        if (error)
             return console.error("Error acquiring client", error.stack);
 
         var rows = [];
