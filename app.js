@@ -48,8 +48,6 @@ if (!config.WEATHER_API_KEY) {
     throw new Error('missing WEATHER_API_KEY');
 }
 
-
-
 app.set('port', (process.env.PORT || 5000))
 
 //verify request came from facebook
@@ -67,11 +65,6 @@ app.use(bodyParser.urlencoded({
 
 // Process application/json
 app.use(bodyParser.json());
-
-
-
-
-
 
 const credentials = {
     client_email: config.GOOGLE_CLIENT_EMAIL,
@@ -508,8 +501,6 @@ async function sendToDialogFlow(sender, textString, params) {
     }
 
 }
-
-
 
 
 function sendTextMessage(recipientId, text) {

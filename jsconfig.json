@@ -1,0 +1,8 @@
+{
+    "compilerOptions": {
+        "module": "commonJS",
+        "target": "es6"
+    },
+    "compileOnSave": true,
+    "exclude": ["node_modules"]
+}
