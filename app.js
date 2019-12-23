@@ -8,7 +8,10 @@ const bodyParser = require('body-parser');
 const request = require('request');
 const app = express();
 const uuid = require('uuid');
+const pg = require('pg');
 
+
+pg.defaults.ssl = true;
 
 // Messenger API parameters
 if (!config.FB_PAGE_TOKEN) {
@@ -46,6 +49,9 @@ if (!config.EMAIL_TO) {
 }
 if (!config.WEATHER_API_KEY) { 
     throw new Error('missing WEATHER_API_KEY');
+}
+if (!config.PG_CONFIG){
+    throw new Error('missing PG_CONFIG');
 }
 
 app.set('port', (process.env.PORT || 5000))
@@ -250,7 +256,7 @@ function handleDialogFlowAction(sender, action, messages, contexts, parameters) 
 
                 if (weather.hasOwnProperty("weather")){
                     sendTextMessage(sender, `${messages[0].text.text} ${weatherSummary.desc}`);
-                    sendTextMessage(sender, `Şuan hava ${weatherSummary.temp} &#8451. En yüksek hava sıcaklığı ${weatherSummary.temp_max} &#8451, en düşük hava sıcaklığı ise ${weatherSummary.temp_min} &#8451`);
+                    sendTextMessage(sender, `Şuan hava ${weatherSummary.temp} °C. En yüksek hava sıcaklığı ${weatherSummary.temp_max} °C, en düşük hava sıcaklığı ise ${weatherSummary.temp_min} &#8451`);
                 }
                 else
                 {
@@ -1042,6 +1048,33 @@ function greetUserText(senderID)
             console.error(response.error);
         }
     });
+}
+
+function storeUserData(userId, user) {
+    var pool = new pg.Pool(config.PG_CONFIG);
+    pool.connect(function (error, client, done) {
+        if (err)
+            return console.error("Error acquiring client", error.stack);
+
+        var rows = [];
+        client.query(`SELECT fb_id FROM users WHERE fb_id = '${userId}' LIMIT 1`,
+            function (error, result) {
+                if (err)
+                    console.log("Query error: " + error);
+                else {
+                    if (result.rows.length === 0) {
+                        let sql = "INSERT INTO users (fb_id, first_name, last_name, profile_pic) values ($1, $2, $3, $4)";
+                        client.query(sql, [
+                            userId,
+                            user.first_name,
+                            user.last_name,
+                            user.profile_pic
+                        ]);
+                    }
+                }
+            });
+    });
+    pool.end();
 }
 
 function isDefined(obj) {
