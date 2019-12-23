@@ -1047,7 +1047,7 @@ async function greetUserText(senderID)
 
     if (!user){
         await resolveAfterXSeconds(2);
-        user = userMap.get(senderID);
+        user = usersMap.get(senderID);
     }
 
     if (user){
