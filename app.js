@@ -243,11 +243,15 @@ function handleDialogFlowAction(sender, action, messages, contexts, parameters) 
             }, 3000);
 
             break;
-        case "detailed-application":
+        case "detailed-application": 
             let filteredContexts = contexts.filter(function (el) {
                 return el.name.includes('job_application') ||
                     el.name.includes('job-application-details_dialog_context');
             });
+
+            console.log("detailed-application");
+            console.log(contexts);
+            console.log(filteredContexts);
 
             if (filteredContexts.length > 0 && contexts[0].parameters) {
                 let phone_number = (isDefined(contexts[0].parameters.fields['phone-number']) && contexts[0].parameters.fields['phone-number'] != '') ?
@@ -267,7 +271,7 @@ function handleDialogFlowAction(sender, action, messages, contexts, parameters) 
                         {
                             content_type: "text",
                             title: "2 Yıldan az",
-                            payload: "Less_than_1year"
+                            payload: "Less_than_2year"
                         },
                         {
                             content_type: "text",
