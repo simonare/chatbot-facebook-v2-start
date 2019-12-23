@@ -153,7 +153,7 @@ app.post('/webhook/', function (req, res) {
 });
 
 
-function setSessionAndUser(senderID){
+async function setSessionAndUser(senderID){
     if (!sessionIds.has(senderID)) {
         console.log("Adding senderId '%s' to 'sessionIds'", senderID);
         sessionIds.set(senderID, uuid.v1());
@@ -1033,12 +1033,33 @@ function sendEmail(subject, content) {
         });
 }
 
+async function resolveAfterXSeconds(x){
+    return new Promise(resolve => {
+        setTimeout(() => {
+            resolve(x);
+        }, x * 1000);
+    });
+}
+
 async function greetUserText(senderID)
 {
     let user = usersMap.get(senderID);
 
-    sendTextMessage(senderID, "Merhaba " + user.first_name + '!' + 
+    if (!user){
+        await resolveAfterXSeconds(2);
+        user = userMap.get(senderID);
+    }
+
+    if (user){
+        sendTextMessage(senderID, "Merhaba " + user.first_name + '!' + 
         'sizin için sıklıkla sorulan sorulara cevap verebilir veya açık pozisyonlarımız hakkında bilgi vererek iş başvurunuzu alabilirim.');
+    }
+    else{
+        sendTextMessage(senderID, "Merhaba! " + 
+        'sizin için sıklıkla sorulan sorulara cevap verebilir veya açık pozisyonlarımız hakkında bilgi vererek iş başvurunuzu alabilirim.');
+    }
+
+
     
 }
 
