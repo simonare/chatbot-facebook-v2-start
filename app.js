@@ -250,8 +250,7 @@ function handleDialogFlowAction(sender, action, messages, contexts, parameters) 
             });
 
             console.log("detailed-application");
-            console.log(contexts);
-            console.log(filteredContexts);
+            console.log(filteredContexts[0].parameters);
 
             if (filteredContexts.length > 0 && contexts[0].parameters) {
                 let phone_number = (isDefined(contexts[0].parameters.fields['phone-number']) && contexts[0].parameters.fields['phone-number'] != '') ?
