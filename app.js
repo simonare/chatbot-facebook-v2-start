@@ -1066,7 +1066,7 @@ function storeUserData(senderId, user) {
                     if (result.rows.length === 0) {
                         let sql = "INSERT INTO users (fb_id, first_name, last_name, profile_pic) values ($1, $2, $3, $4)";
                         client.query(sql, [
-                            userId,
+                            senderId,
                             user.first_name,
                             user.last_name,
                             user.profile_pic
