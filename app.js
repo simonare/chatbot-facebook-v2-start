@@ -235,12 +235,12 @@ function handleDialogFlowAction(sender, action, messages, contexts, parameters) 
             
             console.log("Getting weather information for ", parameters.fields["geo-city"]);
 
-            request(options, function(err, res, body) {
-                if (!(!err && res.statusCode == 200))
+            request(options, function(error, res, body) {
+                if (!(!error && res.statusCode == 200))
                 {
                     sendTextMessage(sender, "Üzgünüm, şuan hava durumu ile ilgili bilgim yok.");
                     console.error("Error on getting weather information with status code %s", res.statusCode);
-                    console.error("Error ", err, "Body", body);
+                    console.error("Error ", error, "Body", body);
                     return;
                 }
                  
@@ -1018,9 +1018,9 @@ function sendEmail(subject, content) {
     };
     sgMail.send(msg)
         .then(() => console.log("email sent!"))
-        .catch(err => {
+        .catch(error => {
             console.log("email not sent!");
-            console.log(err.toString());
+            console.log(error.toString());
         });
 }
 
@@ -1060,7 +1060,7 @@ function storeUserData(senderId, user) {
         var rows = [];
         client.query(`SELECT fb_id FROM users WHERE fb_id = '${senderId}' LIMIT 1`,
             function (error, result) {
-                if (err)
+                if (error)
                     console.log("Query error: " + error);
                 else {
                     if (result.rows.length === 0) {
