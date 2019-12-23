@@ -161,6 +161,7 @@ function setSessionAndUser(senderID){
 
     if (!usersMap.has(senderID)){
         userService.addUser(function(user){
+            console.log("Adding senderId '%s' to 'usersMap' with user data", senderID, user);
             usersMap.set(senderID, user);
         }, senderID);
     }
