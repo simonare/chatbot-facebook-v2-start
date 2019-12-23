@@ -221,13 +221,13 @@ function handleDialogFlowAction(sender, action, messages, contexts, parameters) 
                 },
                 qs: {
                     appid: config.WEATHER_API_KEY,
-                    q: parameters["geo-city"],
+                    q: parameters["geo-city"].stringValue,
                     lang: "tr",
                     units: "metric"
                 }
             };
             
-            console.log("Getting weather information for ", parameters);
+            console.log("Getting weather information for ", parameters["geo-city"].stringValue);
 
             request(options, function(err, res, body) {
                 if (!(!err && res.statusCode == 200))
