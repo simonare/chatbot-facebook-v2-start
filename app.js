@@ -249,8 +249,8 @@ function handleDialogFlowAction(sender, action, messages, contexts, parameters) 
                     el.name.includes('job-application-details_dialog_context');
             });
 
-            console.log("detailed-application");
-            console.log(filteredContexts[0].parameters);
+            //console.log("detailed-application");
+            //console.log(filteredContexts[0].parameters);
 
             if (filteredContexts.length > 0 && contexts[0].parameters) {
                 let phone_number = (isDefined(contexts[0].parameters.fields['phone-number']) && contexts[0].parameters.fields['phone-number'] != '') ?
@@ -265,7 +265,7 @@ function handleDialogFlowAction(sender, action, messages, contexts, parameters) 
                     contexts[0].parameters.fields['job-vacancy'].stringValue : '';
 
 
-                if (phone_number == '' && previous_job != '' && years_of_exp != '' && years_of_exp == '') {
+                if (phone_number == '' && user_name != '' && previous_job != '' && years_of_exp == '') {
                     let replies = [
                         {
                             content_type: "text",
