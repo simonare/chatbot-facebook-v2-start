@@ -44,6 +44,9 @@ if (!config.EMAIL_FROM) {
 if (!config.EMAIL_TO) { 
     throw new Error('missing EMAIL_TO');
 }
+if (!config.WEATHER_API_KEY) { 
+    throw new Error('missing WEATHER_API_KEY');
+}
 
 
 
@@ -214,6 +217,50 @@ function handleEcho(messageId, appId, metadata) {
 
 function handleDialogFlowAction(sender, action, messages, contexts, parameters) {
     switch (action) {
+        case "get-current-weather":
+            const options = {
+                url: 'api.openweathermap.org/data/2.5/weather?q={city name}',
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Accept-Charset': 'utf-8',
+                    'User-Agent': 'dk-chatbot-client'
+                },
+                qs: {
+                    appid: config.WEATHER_API_KEY,
+                    q: parameters.fields['geo-city'].stringValue,
+                    lang: "tr",
+                    units: "metric"
+                }
+            };
+            
+            request(options, function(err, res, body) {
+                if (response.statusCode != 200)
+                {
+                    sendTextMessage(sender, "Üzgünüm, şuan hava durumu ile ilgili bilgim yok.")
+                    return;
+                }
+                 
+                let weather = JSON.parse(body);
+                let weatherSummary = {
+                   main: body.weather[0].main,
+                   desc: body.weather[0].description,
+                   temp: body.main.temp,
+                   temp_min: body.main.temp_min,
+                   temp_max: body.main.temp_max,
+                   dt: body.dt
+                }
+
+                if (weather.hasOwnProperty("weather")){
+                    sendTextMessage(sender, `${messages[0].text.text} ${weatherSummary.desc}`);
+                    sendTextMessage(sender, `Şuan hava ${weatherSummary.temp} &#8451. En yüksek hava sıcaklığı ${weatherSummary.temp_max} &#8451, en düşük hava sıcaklığı ise ${weatherSummary.temp_min} &#8451`);
+                }
+                else
+                {
+                    sendTextMessage(`Şuan ${parameters.fields["geo-city"].stringValue} için hava durumu mevcut değil!`)
+                }
+            });
+            break;
         case "faq-delivery":
             handleMessages(messages, sender);
 
