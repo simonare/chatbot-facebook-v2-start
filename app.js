@@ -219,7 +219,7 @@ function handleDialogFlowAction(sender, action, messages, contexts, parameters) 
     switch (action) {
         case "get-current-weather":
             const options = {
-                url: 'api.openweathermap.org/data/2.5/weather?q={city name}',
+                url: 'api.openweathermap.org/data/2.5/weather',
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
@@ -235,7 +235,7 @@ function handleDialogFlowAction(sender, action, messages, contexts, parameters) 
             };
             
             request(options, function(err, res, body) {
-                if (error || res.statusCode != 200)
+                if (error ||  res.statusCode != 200)
                 {
                     sendTextMessage(sender, "Üzgünüm, şuan hava durumu ile ilgili bilgim yok.");
                     console.Error("Error on getting weather information with status code %s", res.statusCode);
