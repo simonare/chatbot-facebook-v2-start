@@ -14,7 +14,7 @@ module.exports = {
     PG_CONFIG: {
         user: process.env.PG_CONFIG_USER,
         database: process.env.PG_CONFIG_DATABASE,
-        password: process.env.PG_CONFIG.PASSWORD,
+        password: process.env.PG_CONFIG_PASSWORD,
         host: process.env.PG_CONFIG_HOST,
         post: 5432,
         max: 10,
