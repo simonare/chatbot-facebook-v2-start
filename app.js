@@ -234,7 +234,7 @@ function handleDialogFlowAction(sender, action, messages, contexts, parameters) 
                 {
                     sendTextMessage(sender, "Üzgünüm, şuan hava durumu ile ilgili bilgim yok.");
                     console.error("Error on getting weather information with status code %s", res.statusCode);
-                    console.error("Error ", err, "Response ,", res, "Body", body);
+                    console.error("Error ", err, "Body", body);
                     return;
                 }
                  
