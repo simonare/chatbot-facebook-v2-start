@@ -240,12 +240,12 @@ function handleDialogFlowAction(sender, action, messages, contexts, parameters) 
                  
                 let weather = JSON.parse(body);
                 let weatherSummary = {
-                   main: body.weather[0].main,
-                   desc: body.weather[0].description,
-                   temp: body.main.temp,
-                   temp_min: body.main.temp_min,
-                   temp_max: body.main.temp_max,
-                   dt: body.dt
+                   main: weather.weather[0].main,
+                   desc: weather.weather[0].description,
+                   temp: weather.main.temp,
+                   temp_min: weather.main.temp_min,
+                   temp_max: weather.main.temp_max,
+                   dt: weather.dt
                 }
 
                 if (weather.hasOwnProperty("weather")){
