@@ -227,14 +227,14 @@ function handleDialogFlowAction(sender, action, messages, contexts, parameters) 
                 }
             };
             
-            console.log("Getting weather information for '%s'", parameters);
+            console.log("Getting weather information for ", parameters);
 
             request(options, function(err, res, body) {
                 if (!(!err && res.statusCode == 200))
                 {
                     sendTextMessage(sender, "Üzgünüm, şuan hava durumu ile ilgili bilgim yok.");
                     console.error("Error on getting weather information with status code %s", res.statusCode);
-                    console.error("Error %s, Response %s, Body %s", err, res, body);
+                    console.error("Error ", err, "Response ,", res, "Body", body);
                     return;
                 }
                  
