@@ -221,7 +221,7 @@ function handleDialogFlowAction(sender, action, messages, contexts, parameters) 
                 },
                 qs: {
                     appid: config.WEATHER_API_KEY,
-                    q: parameters["geo-city"].stringValue,
+                    q: parameters["geo-city"],
                     lang: "tr",
                     units: "metric"
                 }
