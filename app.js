@@ -212,7 +212,7 @@ function handleDialogFlowAction(sender, action, messages, contexts, parameters) 
     switch (action) {
         case "get-current-weather":
             const options = {
-                url: 'api.openweathermap.org/data/2.5/weather',
+                url: 'https://api.openweathermap.org/data/2.5/weather',
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
