@@ -8,9 +8,9 @@ const bodyParser = require('body-parser');
 const request = require('request');
 const app = express();
 const uuid = require('uuid');
-const pg = require('pg');
+//const pg = require('pg');
 
-pg.defaults.ssl = true;
+//pg.defaults.ssl = true;
 
 const userService = require("./user");
 
