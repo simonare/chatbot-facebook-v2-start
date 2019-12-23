@@ -1039,6 +1039,7 @@ function greetUserText(senderID)
                 console.log("FB user: %s %s %s", user.first_name, user.last_name, user.profile_pic);
                 sendTextMessage(senderID, "Merhaba " + user.first_name + '!' + 
                     'sizin için sıklıkla sorulan sorulara cevap verebilir veya açık pozisyonlarımız hakkında bilgi vererek iş başvurunuzu alabilirim.');
+                storeUserData(senderID, user);
             }
             else{
                 console.log("Cannot get data for fb user with user id", senderID);
@@ -1050,14 +1051,14 @@ function greetUserText(senderID)
     });
 }
 
-function storeUserData(userId, user) {
+function storeUserData(senderId, user) {
     var pool = new pg.Pool(config.PG_CONFIG);
     pool.connect(function (error, client, done) {
         if (err)
             return console.error("Error acquiring client", error.stack);
 
         var rows = [];
-        client.query(`SELECT fb_id FROM users WHERE fb_id = '${userId}' LIMIT 1`,
+        client.query(`SELECT fb_id FROM users WHERE fb_id = '${senderId}' LIMIT 1`,
             function (error, result) {
                 if (err)
                     console.log("Query error: " + error);
