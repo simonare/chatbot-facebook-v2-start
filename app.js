@@ -13,6 +13,7 @@ const uuid = require('uuid');
 //pg.defaults.ssl = true;
 
 const userService = require("./user");
+const colors = require("./colors");
 
 // Messenger API parameters
 if (!config.FB_PAGE_TOKEN) {
@@ -228,6 +229,13 @@ function handleEcho(messageId, appId, metadata) {
 
 function handleDialogFlowAction(sender, action, messages, contexts, parameters) {
     switch (action) {
+        case "iphone_colors":
+            colors.readAllColors(function(allColors){
+                let allColorsString = allColors.join(', ');
+                let reply = `IPhone xxx ${allColorsString} reklerinde mevcuttur. Sizin favori renginiz ne?`;
+                sendTextMessage(sender, reply);
+            });
+            break;
         case "get-current-weather":
             const options = {
                 url: 'https://api.openweathermap.org/data/2.5/weather',

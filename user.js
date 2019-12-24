@@ -43,7 +43,7 @@ async function storeUserData(senderId, user) {
         client.query(`SELECT fb_id FROM users WHERE fb_id = '${senderId}' LIMIT 1`,
             function (error, result) {
                 if (error)
-                    console.log("Query error: " + error);
+                    console.error("Query error: " + error);
                 else {
                     if (result.rows.length === 0) {
                         let sql = "INSERT INTO users (fb_id, first_name, last_name, profile_pic) values ($1, $2, $3, $4)";
