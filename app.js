@@ -229,6 +229,18 @@ function handleEcho(messageId, appId, metadata) {
 
 function handleDialogFlowAction(sender, action, messages, contexts, parameters) {
     switch (action) {
+        case "buy_iphone":
+            colors.readUserColor(function(color){
+                let reply;
+                if (color == ''){
+                    replay = "Telefonunuzu hangi renkte almak istersiniz?"
+                }
+                else{
+                    reply = `Telefonunuz favori renginiz ${color} olarak göndermemizi ister misiniz?`
+                }
+                sendTextMessage(sender, reply);
+            }, sender);
+            break;
         case "iphone_colors.favourite":
             colors.updateUserColor(parameters.fields['color'].stringValue, sender);
             let reply = `Bu rengi ben de seviyorum. Tercihini hatırlayacağım.`;
