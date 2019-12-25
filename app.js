@@ -229,6 +229,11 @@ function handleEcho(messageId, appId, metadata) {
 
 function handleDialogFlowAction(sender, action, messages, contexts, parameters) {
     switch (action) {
+        case "iphone_colors.favourite":
+            colors.updateUserColor(parameters.fields['color'].stringValue, sender);
+            let reply = `Bu rengi ben de seviyorum. Tercihini hatırlayacağım.`;
+            sendTextMessage(sender, reply);
+            break;
         case "iphone_colors":
             colors.readAllColors(function(allColors){
                 let allColorsString = allColors.join(', ');

@@ -8,6 +8,19 @@ pg.defaults.ssl = true;
 
 
 module.exports = {
+
+    updateUserColor: function(color, userId) {
+        var pool = new pg.Pool(config.PG_CONFIG);
+        pool.connect(function(error, client, done){
+            if (error){
+                return console.error("Error acquiring client", error.stack);
+            }
+
+            let sql = 'UPDATE public.users SET color=$1 WHERE fb_id=$2';
+            client.query(sql, [color, userId]);
+        });
+        pool.end();
+    },
     readAllColors: function(callback){
         var pool = new pg.Pool(config.PG_CONFIG);
         pool.connect(function (error, client, done) {
