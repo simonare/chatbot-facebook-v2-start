@@ -458,7 +458,7 @@ function handleDialogFlowResponse(sender, response) {
     let contexts = response.outputContexts;
     let parameters = response.parameters;
 
-    sendTypingOff(sender);
+    fbService.sendTypingOff(sender);
 
     if (fbService.isDefined(action)) {
         handleDialogFlowAction(sender, action, messages, contexts, parameters);
