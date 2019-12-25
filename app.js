@@ -12,7 +12,7 @@ const pg = require('pg');
 
 pg.defaults.ssl = true;
 
-const userService = require('./user');
+const userService = require('./services/user-service');
 const colors = require('./colors');
 const weatherService = require('./services/weather-service');
 const jobApplicationService = require('./services/job-application-service');
@@ -214,9 +214,30 @@ function receivedMessage(event) {
 
 function handleQuickReply(senderID, quickReply, messageId) {
     var quickReplyPayload = quickReply.payload;
-    console.log("Quick reply for message %s with payload %s", messageId, quickReplyPayload);
-    //send payload to api.ai
-    dialogflowService.sendTextQueryToDialogFlow(sessionIds, handleDialogFlowResponse, senderID, quickReplyPayload);
+    switch(quickReplyPayload)
+    {
+        case 'NEWS_PER_WEEK':
+            userService.newsletterSettings(function(updated){
+                if (updated){
+                    fbService.sendTextMessage(senderID, "Yeniliklerimize üye olduğunuz için teşekkürler! Üyelikten çıkmak için 'Üyelikten Çık' yazmanız yeterli olacaktır");
+                } else{
+                    fbService.sendTextMessage(senderID, "Haberler şuan için tarafınıza iletilemiyor. Lütfen daha sonra tekrar deneyiniz!");
+                }
+            },1, senderID);
+            break;
+        case 'NEWS_PER_DAY':
+            userService.newsletterSettings(function(updated){
+                if (updated){
+                    fbService.sendTextMessage(senderID, "Yeniliklerimize üye olduğunuz için teşekkürler! Üyelikten çıkmak için 'Üyelikten Çık' yazmanız yeterli olacaktır");
+                } else{
+                    fbService.sendTextMessage(senderID, "Haberler şuan için tarafınıza iletilemiyor. Lütfen daha sonra tekrar deneyiniz!");
+                }
+            },2, senderID);
+            break;
+        default:
+            dialogflowService.sendTextQueryToDialogFlow(sessionIds, handleDialogFlowResponse, senderID, quickReplyPayload);
+            break;
+    }
 }
 
 function handleDialogFlowAction(sender, action, messages, contexts, parameters) {
@@ -538,6 +559,9 @@ function receivedPostback(event) {
     var payload = event.postback.payload;
 
     switch (payload) {
+        case "FUN_NEWS":
+            sendFunNewsSubscribe(senderID);
+            break;
         case "GET_STARTED":
             greetUserText(senderID);
             break;
@@ -557,6 +581,26 @@ function receivedPostback(event) {
     console.log("Received postback for user %d and page %d with payload '%s' " +
         "at %d", senderID, recipientID, payload, timeOfPostback);
 
+}
+
+function sendFunNewsSubscribe(userId) {
+    let responceText = "Size son teknoloji haberlerini gönderebilirim. " +
+        "Biraz gülüp bilgi edinmeniz için güzel bir yol olduğunu düşünüyorum. Haberleri ne sıklıkla almak istiyorsunuz?";
+
+    let replies = [
+        {
+            "content_type": "text",
+            "title": "Haftada bir kez",
+            "payload": "NEWS_PER_WEEK"
+        },
+        {
+            "content_type": "text",
+            "title": "Günde bir kez",
+            "payload": "NEWS_PER_DAY"
+        }
+    ];
+
+    fbService.sendQuickReply(userId, responceText, replies);
 }
 
 
