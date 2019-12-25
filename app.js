@@ -255,7 +255,7 @@ function handleDialogFlowAction(sender, action, messages, contexts, parameters) 
                     return;
                 }
 
-                if (weather.hasOwnProperty("weather")){
+                if (weatherSummary.hasOwnProperty("main")){
                     fbService.sendTextMessage(sender, `${messages[0].text.text} ${weatherSummary.desc}`);
                     fbService.sendTextMessage(sender, `Şuan hava ${weatherSummary.temp} °C. En yüksek hava sıcaklığı ${weatherSummary.temp_max} °C, en düşük hava sıcaklığı ise ${weatherSummary.temp_min} &#8451`);
                 }
