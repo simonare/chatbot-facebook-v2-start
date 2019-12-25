@@ -221,7 +221,7 @@ function handleQuickReply(senderID, quickReply, messageId) {
 
 function handleDialogFlowAction(sender, action, messages, contexts, parameters) {
     switch (action) {
-        case "buy_iphone":
+        case "buy.iphone":
             colors.readUserColor(function(color){
                 let reply;
                 if (color == ''){
