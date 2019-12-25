@@ -542,7 +542,7 @@ function receivedPostback(event) {
             greetUserText(senderID);
             break;
         case "JOB_APPLY":
-            dialogflowService.sendTextQueryToDialogFlow(sessionIds, handleDialogFlowResponse, senderID, "yeni çalışan almayı düşünüyor musunuz?");
+            dialogflowService.sendEventToDialogFlow(sessionIds, handleDialogFlowResponse, senderID, "JOB_OPENINGS");
             break;
         case "CHAT":
             fbService.sendTextMessage(senderID, "Ben de sohbetinizden keyif aldım. Bana sormak istediğiniz başka birşey var mı?");
