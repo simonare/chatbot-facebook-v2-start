@@ -11,7 +11,7 @@ module.exports = {
     readUserColor: function(callback, userId){
         var pool = new pg.Pool(config.PG_CONFIG);
         pool.connect(function(error, client, done){
-            if (err)
+            if (error)
                 return console.error('Error acquiring client', error.stack);
 
             client.query('SELECT color FROM public.users WHERE fb_id=$1', [userId],
