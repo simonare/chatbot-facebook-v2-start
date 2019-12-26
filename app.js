@@ -249,7 +249,7 @@ function handleDialogFlowAction(sender, action, messages, contexts, parameters) 
                 } else{
                     fbService.sendTextMessage(senderID, "Haberler şuan için tarafınıza iletilemiyor. Lütfen daha sonra tekrar deneyiniz!");
                 }
-            },0, senderID);
+            },0, sender);
             break;
         case "buy.iphone":
             colors.readUserColor(function(color){
