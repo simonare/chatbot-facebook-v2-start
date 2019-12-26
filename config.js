@@ -19,5 +19,6 @@ module.exports = {
         post: 5432,
         max: 10,
         idleTimeoutMillis: 30000
-    }
+    },
+    FB_APP_ID: process.env.FB_APP_ID
 };

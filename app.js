@@ -12,12 +12,17 @@ const pg = require('pg');
 
 pg.defaults.ssl = true;
 
+const boardcast = require('./routes/broadcast');
 const userService = require('./services/user-service');
 const colors = require('./colors');
 const weatherService = require('./services/weather-service');
 const jobApplicationService = require('./services/job-application-service');
 let dialogflowService = require('./services/dialogflow-service');
 const fbService = require('./services/fb-service');
+
+const passport = require("passport");
+const FacebookStrategy = require("passport-facebook").Strategy;
+const session = require("express-session");
 
 // Messenger API parameters
 if (!config.FB_PAGE_TOKEN) {
@@ -78,6 +83,39 @@ app.use(bodyParser.urlencoded({
 // Process application/json
 app.use(bodyParser.json());
 
+app.use(session({
+    secret: 'Datamax2005tfT',
+    resave: true,
+    saveUninitialized: true
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.serializeUser(function(profile, cb){
+    cb(null, profile);
+});
+passport.deserializeUser(function(profile, cb){
+    cb(null, profile);
+});
+
+passport.use(new FacebookStrategy({
+    clientID: config.FB_APP_ID,
+    clientSecret: config.FB_APP_SECRET,
+    callbackURL: config.SERVER_URL + "/auth/facebook/callback"
+  },
+  function(accessToken, refreshToken, profile, cb) {
+    User.findOrCreate({ facebookId: profile.id }, function (err, user) {
+      return cb(err, user);
+    });
+  }
+));
+
+app.get('/auth/facebook', passport.authenticate('facebook', { scope: 'public_profile' }));
+app.get('/auth/facebook/callback', passport.authenticate('facebook', { successRedirect: '/broadcast/broadcast', failureRedirect: '/broadcast' }));
+
+app.set('view engine', 'ejs');
+
 const credentials = {
     client_email: config.GOOGLE_CLIENT_EMAIL,
     private_key: config.GOOGLE_PRIVATE_KEY,
@@ -98,6 +136,12 @@ const usersMap = new Map();
 app.get('/', function (req, res) {
     res.send('Hello world, I am a chat bot')
 })
+
+//app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js')); // redirect bootstrap JS
+//app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css')); // redirect CSS bootstrap
+app.use(express.static(__dirname + '/node_modules/bootstrap/dist'));
+
+app.use('/broadcast', broadcast);
 
 // for Facebook verification
 app.get('/webhook/', function (req, res) {
