@@ -8,13 +8,13 @@
 </head>
 <body>
     <header>
-        <%= include partial/header %>
+        <%= include partials/header %>
     </header>
 
     <main>
         <div class="container">
             <h2>Hello, <%= user.displayName %> </h2>
-            <p><%- user.id %></p>
+            <p><%= user.id %></p>
             <p><%- JSON.stringfy(user) %></p>
         </div>
     </main>
