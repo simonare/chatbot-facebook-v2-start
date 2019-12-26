@@ -80,7 +80,7 @@ app.use(express.static('public'));
 //app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js')); // redirect bootstrap JS
 //app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css')); // redirect CSS bootstrap
 app.use('/js', express.static(__dirname + '/node_modules/jquery/dist'));
-app.use('/js', express.static(__dirname + '/node_modules/popper/dist/umd'));
+app.use('/js', express.static(__dirname + '/node_modules/popper.js/dist/umd'));
 app.use(express.static(__dirname + '/node_modules/bootstrap/dist'));
 
 // Process application/x-www-form-urlencoded
