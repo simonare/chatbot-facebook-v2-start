@@ -20,7 +20,7 @@ router.get('/broadcast', ensureAuthenticated, function (req, res) {
 });
 
 router.post('/broadcast', ensureAuthenticated, function (req, res) {
-    res.render('broadcast-confirm');
+    res.render('broadcast-confirm'); 
 });
 
 router.get('/broadcast-send', ensureAuthenticated, function (req, res) {
@@ -38,7 +38,7 @@ router.get('/logout', ensureAuthenticated, function (req, res) {
 
 function ensureAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
-        if (req.user.id === config.ADMIN_ID){
+        if (req.user.id == config.ADMIN_ID){
             return next();
         }
         res.redirect('/broadcast/no-access');
