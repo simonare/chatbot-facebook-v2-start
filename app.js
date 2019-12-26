@@ -12,13 +12,13 @@ const pg = require('pg');
 
 pg.defaults.ssl = true;
 
-const boardcast = require('./routes/broadcast');
 const userService = require('./services/user-service');
 const colors = require('./colors');
 const weatherService = require('./services/weather-service');
 const jobApplicationService = require('./services/job-application-service');
 let dialogflowService = require('./services/dialogflow-service');
 const fbService = require('./services/fb-service');
+const broadcast = require('./routes/broadcast');
 
 const passport = require("passport");
 const FacebookStrategy = require("passport-facebook").Strategy;
