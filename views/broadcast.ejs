@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <% include partials/head %>
 </head>
+
 <body>
     <header>
         <%= include partials/header %>
@@ -14,8 +16,22 @@
     <main>
         <div class="container">
             <h2>Hello, <%= user.displayName %> </h2>
-            <p><%= user.id %></p>
-            <p><%- JSON.stringfy(user) %></p>
+
+            <form action="/broadcast" method="post">
+                <div class="form-group">
+                  <label for="email">Send as a:</label>
+                  <input type="text" name="email" id="email" class="form-control" placeholder="Your Email" aria-describedby="email">
+                  <small id="email" class="text-muted">Enter Your email</small>
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input type="radio" class="form-check-input" name="newstype" id="newstype" value="1"> Haftalık haberler 
+                    </label>
+                    <label class="form-check-label">
+                        <input type="radio" class="form-check-input" name="newstype" id="newstype" value="2"> Günlük haberler 
+                    </label>
+                </div>
+            </form>
         </div>
     </main>
 
@@ -23,4 +39,5 @@
         <%= include partials/footer %>
     </footer>
 </body>
+
 </html>
