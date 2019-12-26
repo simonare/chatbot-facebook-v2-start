@@ -64,6 +64,9 @@ if (!config.WEATHER_API_KEY) {
 if (!config.PG_CONFIG) {
     throw new Error('missing PG_CONFIG');
 }
+if (!config.ADMIN_ID){
+    throw new Error('missing ADMIN_ID');
+}
 
 app.set('port', (process.env.PORT || 5000));
 
