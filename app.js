@@ -102,7 +102,7 @@ passport.deserializeUser(function (profile, cb) {
 passport.use(new FacebookStrategy({
     clientID: config.FB_APP_ID,
     clientSecret: config.FB_APP_SECRET,
-    callbackURL: config.SERVER_URL + '/auth/facebook/callback'
+    callbackURL: config.SERVER_URL + 'auth/facebook/callback'
 },     function(accessToken, refreshToken, profile, cb) {
     process.nextTick(function() {
         return cb(null, profile);
