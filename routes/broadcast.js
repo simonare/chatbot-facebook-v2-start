@@ -37,6 +37,7 @@ router.get('/logout', ensureAuthenticated, function (req, res) {
 });
 
 function ensureAuthenticated(req, res, next) {
+    console.log("User", req.user);
     if (req.isAuthenticated()) {
         if (req.user.id == config.ADMIN_ID){
             return next();
