@@ -20,7 +20,6 @@ module.exports = {
                 if (user.first_name){
                     console.log("FB user: %s %s %s %s %s %s", user.first_name, user.last_name, user.profile_pic, user.locale, user.timezone, user.gender);
                     await storeUserData(senderID, user);
-                    done();
                     callback(user);
                 }
                 else{
