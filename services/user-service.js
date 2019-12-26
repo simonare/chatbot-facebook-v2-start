@@ -74,7 +74,7 @@ module.exports = {
                             callback(true);
                         };
                     });
-            done();
+            //done();
         });
         pool.end();
     }
