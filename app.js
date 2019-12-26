@@ -245,7 +245,7 @@ function handleDialogFlowAction(sender, action, messages, contexts, parameters) 
         case "unsubscribe":
             userService.newsletterSettings(function(updated){
                 if (updated){
-                    fbService.sendTextMessage(senderID, "Haber üyeliğimizden ayrıldığınıza üzüldük. Fakat ne zaman isterseniz yeniden üye olabileceğinizi unutmayın!");
+                    fbService.sendTextMessage(senderID, "Haber üyeliğimizden ayrıldığınıza üzüldük. Fakat ne zaman isterseniz yeniden üye olabileceğinizi unutmayın! Sizi aramızda görmekten memnuniyet duyarız.");
                 } else{
                     fbService.sendTextMessage(senderID, "Haberler şuan için tarafınıza iletilemiyor. Lütfen daha sonra tekrar deneyiniz!");
                 }
