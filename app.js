@@ -103,12 +103,11 @@ passport.use(new FacebookStrategy({
     clientID: config.FB_APP_ID,
     clientSecret: config.FB_APP_SECRET,
     callbackURL: config.SERVER_URL + '/auth/facebook/callback'
-}, function (accessToken, refreshToken, profile, cb) {
-    User.findOrCreate({ facebookId: profile.id }, function (err, user) {
-        return cb(err, user);
+},     function(accessToken, refreshToken, profile, cb) {
+    process.nextTick(function() {
+        return cb(null, profile);
     });
-}
-));
+}));
 
 app.get('/auth/facebook', passport.authenticate('facebook', { scope: 'public_profile' }));
 app.get('/auth/facebook/callback', passport.authenticate('facebook', { successRedirect: '/broadcast/broadcast', failureRedirect: '/broadcast' }));
