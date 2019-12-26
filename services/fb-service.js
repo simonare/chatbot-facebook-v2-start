@@ -59,7 +59,7 @@ module.exports = {
                     }
                 });
                 break;
-            case "quickReplies": //quick replies
+            case "quickReplies": { //quick replies
                 let replies = [];
                 message.quickReplies.quickReplies.forEach((text) => {
                     let reply =
@@ -67,11 +67,12 @@ module.exports = {
                             "content_type": "text",
                             "title": text,
                             "payload": text
-                        }
+                        };
                     replies.push(reply);
                 });
                 self.sendQuickReply(sender, message.quickReplies.title, replies);
                 break;
+            }
             case "image": //image
                 self.sendImageMessage(sender, message.image.imageUri);
                 break;
@@ -94,13 +95,13 @@ module.exports = {
                         "type": "web_url",
                         "title": message.card.buttons[b].text,
                         "url": message.card.buttons[b].postback
-                    }
+                    };
                 } else {
                     button = {
                         "type": "postback",
                         "title": message.card.buttons[b].text,
                         "payload": message.card.buttons[b].postback
-                    }
+                    };
                 }
                 buttons.push(button);
             }
@@ -209,7 +210,7 @@ module.exports = {
 
         console.log("Received authentication for user %d and page %d with pass " +
             "through param '%s' at %d", senderID, recipientID, passThroughParam,
-            timeOfAuth);
+        timeOfAuth);
 
         // When an authentication is received, we'll send a message back to the sender
         // to let them know it was successful.
@@ -239,9 +240,7 @@ module.exports = {
                 .digest('hex');
 
             if (signatureHash != expectedHash) {
-                throw new
-                Error("Couldn't validate the request signature.");
-                console.log("Couldn't validate the request signature.");
+                throw new Error("Couldn't validate the request signature.");
             }
         }
     },
@@ -256,7 +255,7 @@ module.exports = {
      *
      */
     sendReceiptMessage: function(recipientId, recipient_name, currency, payment_method,
-                                 timestamp, elements, address, summary, adjustments) {
+        timestamp, elements, address, summary, adjustments) {
         let self = module.exports;
         // Generate a random receipt ID as the API requires a unique ID
         var receiptId = "order" + Math.floor(Math.random() * 1000);

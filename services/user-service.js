@@ -49,7 +49,7 @@ module.exports = {
                             console.log('rows');
                             console.log(result.rows);
                             callback(result.rows);
-                        };
+                        }
                     });
             done();
         });
@@ -72,7 +72,7 @@ module.exports = {
                             callback(false);
                         } else {
                             callback(true);
-                        };
+                        }
                     });
             //done();
         });

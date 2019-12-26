@@ -1,6 +1,6 @@
 'use strict';
 
-const dialogflow = require('dialogflow');
+//const dialogflow = require('dialogflow');
 const config = require('./config');
 const express = require('express');
 //const crypto = require('crypto');
@@ -49,19 +49,19 @@ if (!config.FB_APP_SECRET) {
 if (!config.SERVER_URL) { //used for ink to static files
     throw new Error('missing SERVER_URL');
 }
-if (!config.SENDGRID_API_KEY) { 
+if (!config.SENDGRID_API_KEY) {
     throw new Error('missing SENDGRID_API_KEY');
 }
-if (!config.EMAIL_FROM) { 
+if (!config.EMAIL_FROM) {
     throw new Error('missing EMAIL_FROM');
 }
-if (!config.EMAIL_TO) { 
+if (!config.EMAIL_TO) {
     throw new Error('missing EMAIL_TO');
 }
-if (!config.WEATHER_API_KEY) { 
+if (!config.WEATHER_API_KEY) {
     throw new Error('missing WEATHER_API_KEY');
 }
-if (!config.PG_CONFIG){
+if (!config.PG_CONFIG) {
     throw new Error('missing PG_CONFIG');
 }
 
@@ -92,10 +92,10 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-passport.serializeUser(function(profile, cb){
+passport.serializeUser(function (profile, cb) {
     cb(null, profile);
 });
-passport.deserializeUser(function(profile, cb){
+passport.deserializeUser(function (profile, cb) {
     cb(null, profile);
 });
 
@@ -133,8 +133,8 @@ const usersMap = new Map();
 
 // Index route
 app.get('/', function (req, res) {
-    res.send('Hello world, I am a chat bot')
-})
+    res.send('Hello world, I am a chat bot');
+});
 
 //app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js')); // redirect bootstrap JS
 //app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css')); // redirect CSS bootstrap
@@ -151,7 +151,7 @@ app.get('/webhook/', function (req, res) {
         console.error("Failed validation. Make sure the validation tokens match.");
         res.sendStatus(403);
     }
-})
+});
 
 /*
  * All callbacks for Messenger are POST-ed. They will be sent to the same
@@ -201,14 +201,14 @@ app.post('/webhook/', function (req, res) {
 });
 
 
-async function setSessionAndUser(senderID){
+async function setSessionAndUser(senderID) {
     if (!sessionIds.has(senderID)) {
         console.log("Adding senderId '%s' to 'sessionIds'", senderID);
         sessionIds.set(senderID, uuid.v1());
     }
 
-    if (!usersMap.has(senderID)){
-        userService.addUser(function(user){
+    if (!usersMap.has(senderID)) {
+        userService.addUser(function (user) {
             console.log("Adding senderId '%s' to 'usersMap' with user data", senderID, user);
             usersMap.set(senderID, user);
         }, senderID);
@@ -222,7 +222,7 @@ function receivedMessage(event) {
     var recipientID = event.recipient.id;
     var timeOfMessage = event.timestamp;
     var message = event.message;
-    
+
     setSessionAndUser(senderID);
 
     console.log("Received message for user %d and page %d at %d with message:", senderID, recipientID, timeOfMessage);
@@ -247,35 +247,34 @@ function receivedMessage(event) {
     }
 
 
-	if (messageText) {
-		//send message to DialogFlow
+    if (messageText) {
+        //send message to DialogFlow
         dialogflowService.sendTextQueryToDialogFlow(sessionIds, handleDialogFlowResponse, senderID, messageText);
-	} else if (messageAttachments) {
+    } else if (messageAttachments) {
         fbService.handleMessageAttachments(messageAttachments, senderID);
-	}
+    }
 }
 
 function handleQuickReply(senderID, quickReply, messageId) {
     var quickReplyPayload = quickReply.payload;
-    switch(quickReplyPayload)
-    {
+    switch (quickReplyPayload) {
         case 'NEWS_PER_WEEK':
-            userService.newsletterSettings(function(updated){
-                if (updated){
+            userService.newsletterSettings(function (updated) {
+                if (updated) {
                     fbService.sendTextMessage(senderID, "Yeniliklerimize üye olduğunuz için teşekkürler! Üyelikten çıkmak için 'Üyelikten Ayrıl' yazmanız yeterli olacaktır");
-                } else{
+                } else {
                     fbService.sendTextMessage(senderID, "Haberler şuan için tarafınıza iletilemiyor. Lütfen daha sonra tekrar deneyiniz!");
                 }
-            },1, senderID);
+            }, 1, senderID);
             break;
         case 'NEWS_PER_DAY':
-            userService.newsletterSettings(function(updated){
-                if (updated){
+            userService.newsletterSettings(function (updated) {
+                if (updated) {
                     fbService.sendTextMessage(senderID, "Yeniliklerimize üye olduğunuz için teşekkürler! Üyelikten çıkmak için 'Üyelikten Ayrıl' yazmanız yeterli olacaktır");
-                } else{
+                } else {
                     fbService.sendTextMessage(senderID, "Haberler şuan için tarafınıza iletilemiyor. Lütfen daha sonra tekrar deneyiniz!");
                 }
-            },2, senderID);
+            }, 2, senderID);
             break;
         default:
             dialogflowService.sendTextQueryToDialogFlow(sessionIds, handleDialogFlowResponse, senderID, quickReplyPayload);
@@ -286,33 +285,32 @@ function handleQuickReply(senderID, quickReply, messageId) {
 function handleDialogFlowAction(sender, action, messages, contexts, parameters) {
     switch (action) {
         case "unsubscribe":
-            userService.newsletterSettings(function(updated){
-                if (updated){
+            userService.newsletterSettings(function (updated) {
+                if (updated) {
                     fbService.sendTextMessage(sender, "Haber üyeliğimizden ayrıldığınıza üzüldük. Fakat ne zaman isterseniz yeniden üye olabileceğinizi unutmayın! Sizi aramızda görmekten memnuniyet duyarız.");
-                } else{
+                } else {
                     fbService.sendTextMessage(sender, "Haberler şuan için tarafınıza iletilemiyor. Lütfen daha sonra tekrar deneyiniz!");
                 }
-            },0, sender);
+            }, 0, sender);
             break;
         case "buy.iphone":
-            colors.readUserColor(function(color){
+            colors.readUserColor(function (color) {
                 let reply;
-                if (color == ''){
-                    replay = "Telefonunuzu hangi renkte almak istersiniz?"
+                if (color == '') {
+                    reply = "Telefonunuzu hangi renkte almak istersiniz?";
                 }
-                else{
-                    reply = `Telefonunuz favori renginiz ${color} olarak göndermemizi ister misiniz?`
+                else {
+                    reply = `Telefonunuz favori renginiz ${color} olarak göndermemizi ister misiniz?`;
                 }
                 fbService.sendTextMessage(sender, reply);
             }, sender);
             break;
         case "iphone_colors.favourite":
             colors.updateUserColor(parameters.fields['color'].stringValue, sender);
-            let reply = `Bu rengi ben de seviyorum. Tercihini hatırlayacağım.`;
-            fbService.sendTextMessage(sender, reply);
+            fbService.sendTextMessage(sender, "Bu rengi ben de seviyorum. Tercihini hatırlayacağım.");
             break;
         case "iphone_colors":
-            colors.readAllColors(function(allColors){
+            colors.readAllColors(function (allColors) {
                 let allColorsString = allColors.join(', ');
                 let reply = `IPhone xxx ${allColorsString} reklerinde mevcuttur. Sizin favori renginiz ne?`;
                 fbService.sendTextMessage(sender, reply);
@@ -321,54 +319,52 @@ function handleDialogFlowAction(sender, action, messages, contexts, parameters) 
         case "get-current-weather":
             console.log("Getting weather information for ", parameters.fields["geo-city"]);
 
-            weatherService(function(weatherSummary){
-                if (!weatherSummary)
-                {
+            weatherService(function (weatherSummary) {
+                if (!weatherSummary) {
                     fbService.sendTextMessage(sender, "Üzgünüm, şuan hava durumu ile ilgili bilgim yok.");
                     return;
                 }
 
-                if (weatherSummary.hasOwnProperty("main")){
+                if (Object.prototype.hasOwnProperty.call(weatherSummary, "main")) {
                     fbService.sendTextMessage(sender, `${messages[0].text.text} ${weatherSummary.desc}`);
                     fbService.sendTextMessage(sender, `Şuan hava ${weatherSummary.temp} °C. En yüksek hava sıcaklığı ${weatherSummary.temp_max} °C, en düşük hava sıcaklığı ise ${weatherSummary.temp_min} &#8451`);
                 }
-                else
-                {
-                    fbService.sendTextMessage(`Şuan ${parameters.fields["geo-city"].stringValue} için hava durumu mevcut değil!`)
+                else {
+                    fbService.sendTextMessage(`Şuan ${parameters.fields["geo-city"].stringValue} için hava durumu mevcut değil!`);
                 }
 
-            },  parameters.fields['geo-city'].stringValue);
+            }, parameters.fields['geo-city'].stringValue);
             break;
         case "faq-delivery":
             fbService.handleMessages(messages, sender);
 
             fbService.sendTypingOn(sender);
 
-            setTimeout(function(){
+            setTimeout(function () {
                 let buttons = [
                     {
-                        type:"web_url",
+                        type: "web_url",
                         url: "https://www.google.com.tr",
                         title: "Track your order"
                     },
                     {
-                        type:"phone_number",
+                        type: "phone_number",
                         title: "Call Us!",
                         payload: "+905428770938"
                     },
                     {
-                        type:"postback",
+                        type: "postback",
                         title: "Keep on Chatting",
                         payload: "CHAT"
                     },
-    
+
                 ];
 
                 fbService.sendButtonMessage(sender, "What would you like to do next?", buttons);
             }, 3000);
 
             break;
-        case "detailed-application": 
+        case "detailed-application":{
             let filteredContexts = contexts.filter(function (el) {
                 return el.name.includes('job_application') ||
                     el.name.includes('job-application-details_dialog_context');
@@ -419,6 +415,7 @@ function handleDialogFlowAction(sender, action, messages, contexts, parameters) 
                 }
             }
             break;
+        }
         default:
             //unhandled action, just send back the text
             fbService.handleMessages(messages, sender);
@@ -695,7 +692,7 @@ function receivedMessageRead(event) {
 //         });
 // }
 
-async function resolveAfterXSeconds(x){
+async function resolveAfterXSeconds(x) {
     return new Promise(resolve => {
         setTimeout(() => {
             resolve(x);
@@ -703,26 +700,25 @@ async function resolveAfterXSeconds(x){
     });
 }
 
-async function greetUserText(senderID)
-{
+async function greetUserText(senderID) {
     let user = usersMap.get(senderID);
 
-    if (!user){
+    if (!user) {
         await resolveAfterXSeconds(2);
         user = usersMap.get(senderID);
     }
 
-    if (user){
-        fbService.sendTextMessage(senderID, "Merhaba " + user.first_name + '!' + 
-        'sizin için sıklıkla sorulan sorulara cevap verebilir veya açık pozisyonlarımız hakkında bilgi vererek iş başvurunuzu alabilirim.');
+    if (user) {
+        fbService.sendTextMessage(senderID, "Merhaba " + user.first_name + '!' +
+            'sizin için sıklıkla sorulan sorulara cevap verebilir veya açık pozisyonlarımız hakkında bilgi vererek iş başvurunuzu alabilirim.');
     }
-    else{
-        fbService.sendTextMessage(senderID, "Merhaba! " + 
-        'sizin için sıklıkla sorulan sorulara cevap verebilir veya açık pozisyonlarımız hakkında bilgi vererek iş başvurunuzu alabilirim.');
+    else {
+        fbService.sendTextMessage(senderID, "Merhaba! " +
+            'sizin için sıklıkla sorulan sorulara cevap verebilir veya açık pozisyonlarımız hakkında bilgi vererek iş başvurunuzu alabilirim.');
     }
 
 
-    
+
 }
 
 function isDefined(obj) {
@@ -739,5 +735,5 @@ function isDefined(obj) {
 
 // Spin up the server
 app.listen(app.get('port'), function () {
-    console.log('running on port', app.get('port'))
-})
+    console.log('running on port', app.get('port'));
+});

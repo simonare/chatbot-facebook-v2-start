@@ -36,4 +36,4 @@ module.exports = function(phone_number, user_name, previous_job, years_of_experi
                 });
     });
     pool.end();
-}
+};

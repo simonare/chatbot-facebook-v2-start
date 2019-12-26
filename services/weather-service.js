@@ -24,8 +24,7 @@ module.exports = function(callback, geoCity){
     request(options, function(error, response, body){
         if(!error && response.statusCode == 200) {
             let weather = JSON.parse(body);
-            if (weather.hasOwnProperty("weather")) {
-
+            if (Object.prototype.hasOwnProperty.call(weather, "weather")) {
                 callback({
                     main: weather.weather[0].main,
                     desc: weather.weather[0].description,
@@ -33,7 +32,7 @@ module.exports = function(callback, geoCity){
                     temp_min: weather.main.temp_min,
                     temp_max: weather.main.temp_max,
                     dt: weather.dt
-                 });
+                });
             } else {
                 console.error("Error on getting weather information with status code %s", response.statusCode);
                 console.error("Error ", error, "Body", body);
@@ -44,4 +43,4 @@ module.exports = function(callback, geoCity){
             console.error(response.error);
         }
     });
-} 
+};
