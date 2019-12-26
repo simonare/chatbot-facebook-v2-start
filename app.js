@@ -219,7 +219,7 @@ function handleQuickReply(senderID, quickReply, messageId) {
         case 'NEWS_PER_WEEK':
             userService.newsletterSettings(function(updated){
                 if (updated){
-                    fbService.sendTextMessage(senderID, "Yeniliklerimize üye olduğunuz için teşekkürler! Üyelikten çıkmak için 'Üyelikten Çık' yazmanız yeterli olacaktır");
+                    fbService.sendTextMessage(senderID, "Yeniliklerimize üye olduğunuz için teşekkürler! Üyelikten çıkmak için 'Üyelikten Ayrıl' yazmanız yeterli olacaktır");
                 } else{
                     fbService.sendTextMessage(senderID, "Haberler şuan için tarafınıza iletilemiyor. Lütfen daha sonra tekrar deneyiniz!");
                 }
@@ -228,7 +228,7 @@ function handleQuickReply(senderID, quickReply, messageId) {
         case 'NEWS_PER_DAY':
             userService.newsletterSettings(function(updated){
                 if (updated){
-                    fbService.sendTextMessage(senderID, "Yeniliklerimize üye olduğunuz için teşekkürler! Üyelikten çıkmak için 'Üyelikten Çık' yazmanız yeterli olacaktır");
+                    fbService.sendTextMessage(senderID, "Yeniliklerimize üye olduğunuz için teşekkürler! Üyelikten çıkmak için 'Üyelikten Ayrıl' yazmanız yeterli olacaktır");
                 } else{
                     fbService.sendTextMessage(senderID, "Haberler şuan için tarafınıza iletilemiyor. Lütfen daha sonra tekrar deneyiniz!");
                 }
@@ -242,6 +242,15 @@ function handleQuickReply(senderID, quickReply, messageId) {
 
 function handleDialogFlowAction(sender, action, messages, contexts, parameters) {
     switch (action) {
+        case "unsubscribe":
+            userService.newsletterSettings(function(updated){
+                if (updated){
+                    fbService.sendTextMessage(senderID, "Haber üyeliğimizden ayrıldığınıza üzüldük. Fakat ne zaman isterseniz yeniden üye olabileceğinizi unutmayın!");
+                } else{
+                    fbService.sendTextMessage(senderID, "Haberler şuan için tarafınıza iletilemiyor. Lütfen daha sonra tekrar deneyiniz!");
+                }
+            },0, senderID);
+            break;
         case "buy.iphone":
             colors.readUserColor(function(color){
                 let reply;
