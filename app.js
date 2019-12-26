@@ -77,6 +77,9 @@ app.use(bodyParser.json({
 
 //serve static files in the public directory
 app.use(express.static('public'));
+//app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js')); // redirect bootstrap JS
+//app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css')); // redirect CSS bootstrap
+app.use(express.static(__dirname + '/node_modules/bootstrap/dist'));
 
 // Process application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({
@@ -138,9 +141,6 @@ app.get('/', function (req, res) {
     res.send('Hello world, I am a chat bot');
 });
 
-//app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js')); // redirect bootstrap JS
-//app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css')); // redirect CSS bootstrap
-app.use(express.static(__dirname + '/node_modules/bootstrap/dist'));
 
 app.use('/broadcast', broadcast);
 
