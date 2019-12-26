@@ -21,5 +21,6 @@ module.exports = {
         idleTimeoutMillis: 30000
     },
     FB_APP_ID: process.env.FB_APP_ID,
-    ADMIN_ID: process.env.ADMIN_ID
+    ADMIN_ID: process.env.ADMIN_ID,
+    ENV: process.env.NODE_ENV || 'dev'
 };

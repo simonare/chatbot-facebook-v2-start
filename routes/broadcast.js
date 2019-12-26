@@ -39,7 +39,7 @@ router.get('/logout', ensureAuthenticated, function (req, res) {
 function ensureAuthenticated(req, res, next) {
     console.log("User", req.user);
     if (req.isAuthenticated()) {
-        if (req.user.id == config.ADMIN_ID){
+        if (req.user.id == config.ADMIN_ID || config.ENV === 'dev'){
             return next();
         }
         res.redirect('/broadcast/no-access');
