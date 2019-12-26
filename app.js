@@ -3,9 +3,9 @@
 const dialogflow = require('dialogflow');
 const config = require('./config');
 const express = require('express');
-const crypto = require('crypto');
+//const crypto = require('crypto');
 const bodyParser = require('body-parser');
-const request = require('request');
+//const request = require('request');
 const app = express();
 const uuid = require('uuid');
 const pg = require('pg');
@@ -65,7 +65,7 @@ if (!config.PG_CONFIG){
     throw new Error('missing PG_CONFIG');
 }
 
-app.set('port', (process.env.PORT || 5000))
+app.set('port', (process.env.PORT || 5000));
 
 //verify request came from facebook
 app.use(bodyParser.json({
@@ -102,13 +102,12 @@ passport.deserializeUser(function(profile, cb){
 passport.use(new FacebookStrategy({
     clientID: config.FB_APP_ID,
     clientSecret: config.FB_APP_SECRET,
-    callbackURL: config.SERVER_URL + "/auth/facebook/callback"
-  },
-  function(accessToken, refreshToken, profile, cb) {
+    callbackURL: config.SERVER_URL + '/auth/facebook/callback'
+}, function (accessToken, refreshToken, profile, cb) {
     User.findOrCreate({ facebookId: profile.id }, function (err, user) {
-      return cb(err, user);
+        return cb(err, user);
     });
-  }
+}
 ));
 
 app.get('/auth/facebook', passport.authenticate('facebook', { scope: 'public_profile' }));
@@ -116,17 +115,17 @@ app.get('/auth/facebook/callback', passport.authenticate('facebook', { successRe
 
 app.set('view engine', 'ejs');
 
-const credentials = {
-    client_email: config.GOOGLE_CLIENT_EMAIL,
-    private_key: config.GOOGLE_PRIVATE_KEY,
-};
+// const credentials = {
+//     client_email: config.GOOGLE_CLIENT_EMAIL,
+//     private_key: config.GOOGLE_PRIVATE_KEY,
+// };
 
-const sessionClient = new dialogflow.SessionsClient(
-    {
-        projectId: config.GOOGLE_PROJECT_ID,
-        credentials
-    }
-);
+// const sessionClient = new dialogflow.SessionsClient(
+//     {
+//         projectId: config.GOOGLE_PROJECT_ID,
+//         credentials
+//     }
+// );
 
 
 const sessionIds = new Map();
