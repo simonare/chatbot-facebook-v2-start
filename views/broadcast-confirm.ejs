@@ -26,21 +26,6 @@
                 <% } %>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-4 col-xs-12">
-                <a class="btn btn-success" href="/broadcast/broadcast-send">Send</a>
-                <a class="btn btn-default" href="/broadcast/broadcast">Cancel</a>
-            </div>
-            <div class="col-md-8 col-xs-12">
-                <p>Message will be sent to <strong><%= numUsers %></strong> users.</p>
-                <p>List of all users:</p>
-                <ul>
-                    <% users.forEach(function(user) { %>
-                        <li><%= user.first_name %> <%= user.last_name %></li>
-                    <% }); %>
-                </ul>
-            </div>
-        </div>
     </div>
 </main>
 
