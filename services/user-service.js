@@ -51,7 +51,7 @@ module.exports = {
                             callback(result.rows);
                         }
                     });
-            done();
+            //done();
         });
         pool.end();
     },
