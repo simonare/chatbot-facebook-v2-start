@@ -26,7 +26,7 @@ router.post('/broadcast', ensureAuthenticated, function (req, res) {
     req.session.message = message;
     userService.readAllUsers(function(users){
         req.session.users = users;
-        res.render('broadcast-confirm', {user: req.user, message: message, uesrs: users, numUsers: users.length, newstype: newstype});
+        res.render('broadcast-confirm', {user: req.user, message: message, users: users, numUsers: users.length, newstype: newstype});
     }, newstype);
 });
 

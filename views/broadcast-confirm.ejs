@@ -18,11 +18,11 @@
                 <textarea readonly><%= message %></textarea>
             </div>
             <div class="col-md-8 col-xs-12">
-                <% if(newstype===1) { %>
-                <p>Message will be sent as a <strong>weekly</strong>news.</p>
+                <% if( newstype===1 ) { %>
+                    <p>Message will be sent as a <strong>weekly</strong>news.</p>
                 <% } %>
-                <% if(newstype===2) { %>
-                <p>Message will be sent as a <strong>daily</strong>news.</p>
+                <% if( newstype===2 ) { %>
+                    <p>Message will be sent as a <strong>daily</strong>news.</p>
                 <% } %>
             </div>
         </div>
@@ -36,8 +36,8 @@
                 <p>List of all users:</p>
                 <ul>
                     <% users.forEach(function(user) { %>
-                    <li><%= user.first_name %> <%= user.last_name %></li>
-                    <% }) %>
+                        <li><%= user.first_name %> <%= user.last_name %></li>
+                    <% }); %>
                 </ul>
             </div>
         </div>
