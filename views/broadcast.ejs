@@ -20,21 +20,31 @@
             <form action="/broadcast" method="post">
                 <div class="form-group">
                   <label for="email">Send as a:</label>
-                  <input type="text" name="email" id="email" class="form-control" placeholder="Your Email" aria-describedby="email">
-                  <small id="email" class="text-muted">Enter Your email</small>
-                </div>
-                <div class="form-check">
+                  <div class="form-check">
                     <label class="form-check-label">
                         <input type="radio" class="form-check-input" name="newstype" id="newstype" value="1"> Haftalık haberler 
                     </label>
+                  </div>
+                  <div class="form-check">
+                      <label class="form-check-label">
+                          <input type="radio" class="form-check-input" name="newstype" id="newstype" value="2"> Günlük haberler 
+                      </label>
+                  </div>
                 </div>
-                <div class="form-check">
-                    <label class="form-check-label">
-                        <input type="radio" class="form-check-input" name="newstype" id="newstype" value="2"> Günlük haberler 
-                    </label>
+
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="email">Message:</label>
+                    <div class="col-sm-10">
+                        <textarea name="message" placeholder="Enter message"></textarea>
+                    </div>
                 </div>
                 
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-success">Submit</button>
+                        <a href="/" class="btn btn-default">Cancel</a>
+                    </div>
+                </div>
             </form>
         </div>
     </main>
