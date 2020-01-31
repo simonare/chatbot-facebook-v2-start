@@ -20,6 +20,7 @@ module.exports = {
         max: 10,
         idleTimeoutMillis: 30000
     },
+    FB_PAGE_INBOX_ID: process.env.FB_PAGE_INBOX_ID,
     FB_APP_ID: process.env.FB_APP_ID,
     ADMIN_ID: process.env.ADMIN_ID,
     ENV: process.env.NODE_ENV || 'dev'
