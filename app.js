@@ -18,7 +18,9 @@ const weatherService = require('./services/weather-service');
 const jobApplicationService = require('./services/job-application-service');
 let dialogflowService = require('./services/dialogflow-service');
 const fbService = require('./services/fb-service');
+
 const broadcast = require('./routes/broadcast');
+const webviews = require('./routes/webviews');
 
 const passport = require("passport");
 const FacebookStrategy = require("passport-facebook").Strategy;
@@ -111,7 +113,7 @@ passport.use(new FacebookStrategy({
     clientID: config.FB_APP_ID,
     clientSecret: config.FB_APP_SECRET,
     callbackURL: config.SERVER_URL + 'auth/facebook/callback'
-},     function(accessToken, refreshToken, profile, cb) {
+},function(accessToken, refreshToken, profile, cb) {
     process.nextTick(function() {
         return cb(null, profile);
     });
@@ -145,6 +147,8 @@ app.get('/', function (req, res) {
 
 
 app.use('/broadcast', broadcast);
+app.use('/webviews', webviews);
+
 
 // for Facebook verification
 app.get('/webhook/', function (req, res) {

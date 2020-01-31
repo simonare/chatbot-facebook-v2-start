@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Udemy demo webview</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <link rel="stylesheet" href="/webview.css" />
+</head>
+<body>
+<div class="container">
+    <h3>Newsletter Settings</h3>
+    <form action="/webviews/save" method="get">
+        <h5>Frequency</h5>
+        <input type="radio" name="newsletter" id="newsletter" value="1"> Weekly <br>
+        <input type="radio" name="newsletter" id="newsletter" value="2"> Daily <br>
+        <input type="radio" name="newsletter" id="newsletter" value="0"> Never <br>
+        
+        <h5>Topics</h5>
+        <input type="checkbox" name="topics[]" value="IPhone">IPhone <br>
+        <input type="checkbox" name="topics[]" value="Ipad">Ipad <br>
+        <input type="checkbox" name="topics[]" value="Mac">Mac <br>
+
+        <h5>Send Deals</h5>
+        <input type="radio" name="deals" value="1"> Yes <br>
+        <input type="radio" name="deals" value="0"> No <br>
+
+        <button id="submitButton" type="submit" value="submit" ></button>
+</div>
+
+
+
+<script>
+    (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.com/en_US/messenger.Extensions.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'Messenger'));
+
+
+    window.extAsyncInit = function() {
+        // the Messenger Exstensions JS SDK is done loading
+
+        document.getElementById("submitButton").addEventListener('click', function(){
+            MessengerExtensions.requestCloseBrowser(function success() {
+                //webview closed
+            }, function error(err){
+                // an error occured
+            });
+        });
+    };
+</script>
+</body>
+</html> 
