@@ -282,6 +282,9 @@ function receivedMessage(event) {
 function handleQuickReply(senderID, quickReply, messageId) {
     var quickReplyPayload = quickReply.payload;
     switch (quickReplyPayload) {
+        case "LIVE_AGENT":
+            fbService.sendPassThread(senderID);
+            break;
         case 'NEWS_PER_WEEK':
             userService.newsletterSettings(function (updated) {
                 if (updated) {
@@ -308,6 +311,26 @@ function handleQuickReply(senderID, quickReply, messageId) {
 
 function handleDialogFlowAction(sender, action, messages, contexts, parameters) {
     switch (action) {
+        case "input.unknown":
+            fbService.handleMessages(messages, sender);
+
+            fbService.sendTypingOn(sender);
+
+            setTimeout(function(){
+                let responseText = "Lütfen sorunuzu tekrar edebilir misiniz? veya agentimizle konuşmak için lütfen alttaki butona basınız.";
+
+                let replies = [
+                    {
+                        "content_type": "text",
+                        "title": "Live Agent",
+                        "payload": "LIVE_AGENT"
+                    }
+                ];
+                
+                fbService.sendQuickReply(sender, responseText, replies);
+            }, 2000);
+
+            break;
         case "talk.human":
         case "DefaultFallbackIntent.DefaultFallbackIntent-yes":
             fbService.sendPassThread(sender);
