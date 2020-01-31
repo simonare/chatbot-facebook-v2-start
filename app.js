@@ -209,6 +209,8 @@ app.post('/webhook/', function (req, res) {
                         fbService.receivedMessageRead(messagingEvent);
                     } else if (messagingEvent.account_linking) {
                         fbService.receivedAccountLink(messagingEvent);
+                    } else if (messagingEvent.pass_thread_control){
+                        //do something with the metadata: messagingEvent.pass_thread_control.metadata
                     } else {
                         console.log("Webhook received unknown messagingEvent: ", messagingEvent);
                     }
@@ -307,6 +309,7 @@ function handleQuickReply(senderID, quickReply, messageId) {
 function handleDialogFlowAction(sender, action, messages, contexts, parameters) {
     switch (action) {
         case "talk.human":
+        case "DefaultFallbackIntent.DefaultFallbackIntent-yes":
             fbService.sendPassThread(sender);
             break;
         case "unsubscribe":
